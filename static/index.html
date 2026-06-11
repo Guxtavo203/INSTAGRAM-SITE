@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorteio Instagram</title>
+<style>
+:root {
+  --bg: #fafafa;
+  --card: #ffffff;
+  --border: #efefef;
+  --ig1: #833ab4;
+  --ig2: #c13584;
+  --ig3: #e1306c;
+  --ig4: #f77737;
+  --ig5: #fcaf45;
+  --accent: #e1306c;
+  --glow: rgba(225,48,108,0.18);
+  --text: #1a1a1a;
+  --muted: #737373;
+  --success: #2ecc71;
+  --danger: #e74c3c;
+  --grad: linear-gradient(45deg, var(--ig1), var(--ig2), var(--ig3), var(--ig4), var(--ig5));
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 52px 24px;
+}
+
+/* ── Header ── */
+.hdr { text-align: center; margin-bottom: 52px; }
+.hdr-logo {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+  font-size: 28px;
+  box-shadow: 0 4px 20px rgba(225,48,108,.35);
+}
+.hdr-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(45deg,rgba(131,58,180,.08),rgba(225,48,108,.08));
+  border: 1px solid rgba(225,48,108,.2);
+  border-radius: 100px; padding: 5px 15px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ig3); margin-bottom: 18px;
+}
+.hdr h1 {
+  font-size: clamp(26px,5vw,42px); font-weight: 900; letter-spacing: -.02em;
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 10px;
+}
+.hdr p { color: var(--muted); font-size: 14px; }
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 28px 30px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.07);
+}
+.card-title {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ig2); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 9px;
+}
+.step {
+  width: 21px; height: 21px; border-radius: 50%;
+  background: var(--grad); color: #fff;
+  font-size: 10px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Inputs ── */
+.row { display: flex; gap: 10px; align-items: flex-end; }
+.row .fg { flex: 1; }
+label.lbl {
+  display: block; font-size: 11px; font-weight: 600;
+  color: var(--muted); text-transform: uppercase;
+  letter-spacing: .07em; margin-bottom: 7px;
+}
+input.inp {
+  width: 100%; background: #fafafa;
+  border: 1.5px solid #dbdbdb;
+  border-radius: 12px; padding: 12px 15px;
+  color: var(--text); font-size: 14px; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+input.inp:focus { border-color: var(--ig3); box-shadow: 0 0 0 3px var(--glow); }
+input.inp::placeholder { color: #c7c7c7; }
+
+/* ── Buttons ── */
+.btn {
+  border: none; border-radius: 12px;
+  padding: 12px 22px; font-size: 14px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: transform .15s, box-shadow .15s, opacity .15s;
+}
+.btn-p {
+  background: var(--grad); color: #fff;
+  box-shadow: 0 4px 20px rgba(225,48,108,.3);
+}
+.btn-p:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(225,48,108,.45); }
+.btn-p:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-g {
+  background: transparent; color: var(--muted);
+  border: 1.5px solid #dbdbdb; font-size: 12px; padding: 8px 14px;
+}
+.btn-g:hover { border-color: var(--ig3); color: var(--ig3); }
+
+/* ── Progress ── */
+.prog-wrap { background: #efefef; border-radius: 100px; height: 5px; overflow: hidden; margin: 14px 0 7px; }
+.prog-bar  { height: 100%; background: var(--grad); border-radius: 100px; width: 0%; transition: width .4s ease; }
+.status    { font-size: 12px; color: var(--muted); text-align: center; }
+.status.err { color: var(--danger); }
+.status.ok  { color: var(--success); }
+
+/* ── Options ── */
+.opts { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: 14px 0; }
+.opt-lbl { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); cursor: pointer; user-select: none; }
+.opt-lbl input[type=checkbox] { accent-color: var(--ig3); }
+.opt-inp { background: #fafafa; border: 1.5px solid #dbdbdb; border-radius: 8px; padding: 5px 10px; color: var(--text); font-size: 12px; outline: none; width: 110px; }
+.opt-inp:focus { border-color: var(--ig3); }
+
+/* ── Participants ── */
+.p-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.p-cnt { font-size: 13px; color: var(--muted); }
+.p-cnt strong { color: var(--ig3); font-size: 15px; font-weight: 700; }
+.p-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 9px; max-height: 270px; overflow-y: auto; padding-right: 3px;
+}
+.p-grid::-webkit-scrollbar { width: 3px; }
+.p-grid::-webkit-scrollbar-thumb { background: #dbdbdb; border-radius: 2px; }
+.p-card {
+  background: #fafafa; border: 1px solid #efefef;
+  border-radius: 12px; padding: 12px 8px; text-align: center;
+  animation: popIn .22s cubic-bezier(.34,1.56,.64,1) backwards;
+}
+@keyframes popIn {
+  from { opacity:0; transform: scale(.82) translateY(6px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+.p-av {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: block; margin: 0 auto 7px; object-fit: cover;
+  border: 2px solid transparent;
+  background-image: var(--grad), white;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+.p-user { font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Slot ── */
+.slot {
+  background: linear-gradient(135deg,rgba(131,58,180,.06),rgba(225,48,108,.06),rgba(247,119,55,.06));
+  border: 1.5px solid rgba(225,48,108,.15);
+  border-radius: 20px; padding: 40px 24px; margin: 22px 0;
+  text-align: center; position: relative; overflow: hidden;
+  min-height: 135px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.slot-glow {
+  position: absolute; inset: -1px; border-radius: 20px;
+  background: linear-gradient(45deg,rgba(131,58,180,.12),rgba(225,48,108,.12),rgba(252,175,69,.12));
+  opacity: 0; transition: opacity .4s; pointer-events: none;
+}
+.slot-glow.on { opacity: 1; }
+.slot-name {
+  font-size: clamp(26px,4.5vw,50px); font-weight: 900; letter-spacing: -.025em;
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; position: relative; z-index: 1;
+  min-height: 1.2em; display: flex; align-items: center;
+}
+.slot-sub {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .15em;
+  color: var(--muted); margin-top: 7px; position: relative; z-index: 1; transition: color .3s;
+}
+.slot-sub.live { color: var(--ig3); }
+
+/* ── Raffle btn ── */
+.raffle-ctr { text-align: center; }
+.btn-raffle {
+  background: var(--grad); color: #fff; border: none; border-radius: 16px;
+  padding: 17px 50px; font-size: 15px; font-weight: 800; cursor: pointer;
+  letter-spacing: .08em; text-transform: uppercase;
+  box-shadow: 0 8px 32px rgba(225,48,108,.35);
+  transition: transform .15s, box-shadow .15s, opacity .15s;
+}
+.btn-raffle:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(225,48,108,.5); }
+.btn-raffle:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ── Winner ── */
+.winner-card {
+  background: linear-gradient(135deg,rgba(131,58,180,.06),rgba(225,48,108,.06),rgba(252,175,69,.06));
+  border: 1.5px solid rgba(225,48,108,.2);
+  border-radius: 24px; padding: 44px 28px; text-align: center; margin-top: 18px;
+  animation: wPop .55s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes wPop { from { opacity:0; transform:scale(.78); } to { opacity:1; transform:scale(1); } }
+.w-emoji  { font-size: 54px; display: block; margin-bottom: 16px; }
+.w-tag    { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--ig2); margin-bottom: 14px; }
+.w-av     { width: 80px; height: 80px; border-radius: 50%; display: block; margin: 0 auto 16px; object-fit: cover; padding: 3px; background: var(--grad); box-shadow: 0 4px 20px rgba(225,48,108,.3); }
+.w-name   { font-size: clamp(22px,4vw,36px); font-weight: 900; letter-spacing: -.02em; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 7px; }
+.w-comment { font-size: 13px; color: var(--muted); font-style: italic; max-width: 380px; margin: 0 auto 22px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.w-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+/* ── Multi winners ── */
+.mw-list { list-style: none; }
+.mw-list li { display: flex; align-items: center; gap: 11px; padding: 10px 13px; background: #fafafa; border-radius: 11px; margin-bottom: 7px; font-size: 14px; animation: fadeUp .3s ease backwards; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+.mw-list li img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink:0; }
+.mw-rank { font-size: 11px; color: var(--muted); font-weight: 700; min-width: 24px; }
+
+/* ── Confetti ── */
+#confetti { position: fixed; inset:0; pointer-events:none; z-index:100; display:none; }
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .wrap { padding: 30px 16px; }
+  .card { padding: 20px 16px; }
+  .row  { flex-direction: column; }
+  .btn-raffle { padding: 15px 34px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="wrap">
+
+  <div class="hdr">
+    <div class="hdr-logo">&#128247;</div>
+    <div class="hdr-badge">&#10024; Sorteio de Comentarios</div>
+    <h1>Sorteio Instagram</h1>
+    <p>Cole a URL do post, carregue os comentarios e sorteie o vencedor</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="step">1</span> URL do Post</div>
+    <div class="row">
+      <div class="fg">
+        <label class="lbl">Link do post do Instagram</label>
+        <input id="urlInput" class="inp" type="text" placeholder="https://www.instagram.com/p/ABC123xyz/">
+      </div>
+      <button class="btn btn-p" id="loadBtn" onclick="loadComments()">Carregar</button>
+    </div>
+    <div id="feedback" style="display:none;">
+      <div class="prog-wrap"><div class="prog-bar" id="prog"></div></div>
+      <div class="status" id="statusMsg"></div>
+    </div>
+  </div>
+
+  <div class="card" id="pSection" style="display:none;">
+    <div class="p-hdr">
+      <div class="card-title" style="margin-bottom:0;"><span class="step">2</span> Participantes</div>
+      <div class="p-cnt"><strong id="pCount">0</strong> unicos</div>
+    </div>
+    <div class="opts">
+      <label class="opt-lbl"><input type="checkbox" id="optDedup" checked> 1 voto por usuario</label>
+      <label class="opt-lbl"><input type="checkbox" id="optWord"> Exigir palavra:</label>
+      <input class="opt-inp" id="wordInput" placeholder='ex: "quero!"'>
+    </div>
+    <div class="p-grid" id="pGrid"></div>
+    <div style="text-align:right;margin-top:12px;">
+      <button class="btn btn-g" onclick="applyFilters()">&#8635; Aplicar filtros</button>
+    </div>
+  </div>
+
+  <div class="card" id="raffleSection" style="display:none;">
+    <div class="card-title"><span class="step">3</span> Sorteio</div>
+    <div class="slot">
+      <div class="slot-glow" id="slotGlow"></div>
+      <div class="slot-name" id="slotName">?</div>
+      <div class="slot-sub" id="slotSub">Aguardando...</div>
+    </div>
+    <div class="raffle-ctr">
+      <div class="opts" style="justify-content:center;margin-bottom:18px;">
+        <label class="opt-lbl">
+          Ganhadores:
+          <input type="number" id="nWinners" class="opt-inp" value="1" min="1" max="100" style="width:58px;text-align:center;">
+        </label>
+      </div>
+      <button class="btn-raffle" id="raffleBtn" onclick="startRaffle()">&#127922; SORTEAR AGORA</button>
+    </div>
+  </div>
+
+  <div id="winnerSection" style="display:none;">
+    <div class="winner-card" id="winnerCard">
+      <span class="w-emoji">&#127881;</span>
+      <div class="w-tag">Vencedor</div>
+      <img id="wAv" class="w-av" src="" alt="">
+      <div class="w-name" id="wName">@username</div>
+      <div class="w-comment" id="wComment"></div>
+      <div class="w-btns">
+        <button class="btn btn-g" onclick="resetRaffle()">&#8635; Novo sorteio</button>
+        <button class="btn btn-g" onclick="copyResult()">&#128203; Copiar resultado</button>
+      </div>
+    </div>
+    <div class="card" id="mwCard" style="display:none;margin-top:16px;">
+      <div class="card-title">Todos os Ganhadores</div>
+      <ul class="mw-list" id="mwList"></ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let rawData = [], participants = [], winners = [], isSpinning = false, spinTimer = null;
+
+async function loadComments() {
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url) return setStatus('Cole a URL do post.', 'err');
+  setLoading(true); setProgress(10); setStatus('Carregando comentarios...'); rawData = [];
+  try {
+    const res  = await fetch('/api/comments?url=' + encodeURIComponent(url));
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Erro desconhecido');
+    setProgress(100);
+    rawData = data.comments || [];
+    applyFilters();
+    setStatus(rawData.length + ' comentarios — ' + participants.length + ' participantes unicos.', 'ok');
+  } catch(e) { setStatus('Erro: ' + e.message, 'err'); setProgress(0); }
+  setLoading(false);
+}
+
+function applyFilters() {
+  const dedup = document.getElementById('optDedup').checked;
+  const useW  = document.getElementById('optWord').checked;
+  const word  = document.getElementById('wordInput').value.trim().toLowerCase();
+  let list = [...rawData];
+  if (useW && word) list = list.filter(c => c.text && c.text.toLowerCase().includes(word));
+  if (dedup) {
+    const seen = new Set();
+    list = list.filter(c => { if (seen.has(c.username)) return false; seen.add(c.username); return true; });
+  }
+  participants = list;
+  renderParticipants();
+}
+
+function renderParticipants() {
+  document.getElementById('pSection').style.display = 'block';
+  document.getElementById('pCount').textContent = participants.length;
+  const grid = document.getElementById('pGrid');
+  grid.innerHTML = '';
+  participants.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'p-card';
+    el.style.animationDelay = Math.min(i * 0.018, 0.8) + 's';
+    const src = p.avatar || avatarSvg(p.username);
+    el.innerHTML = '<img class="p-av" src="' + src + '" alt="' + p.username + '" onerror="this.src=\'' + avatarSvg(p.username) + '\'">' +
+                   '<div class="p-user">@' + p.username + '</div>';
+    grid.appendChild(el);
+  });
+  if (participants.length > 0) document.getElementById('raffleSection').style.display = 'block';
+}
+
+function startRaffle() {
+  if (isSpinning || !participants.length) return;
+  const n = Math.max(1, Math.min(parseInt(document.getElementById('nWinners').value) || 1, participants.length));
+  winners = []; isSpinning = true;
+  document.getElementById('raffleBtn').disabled = true;
+  document.getElementById('winnerSection').style.display = 'none';
+  document.getElementById('slotGlow').classList.add('on');
+  document.getElementById('slotSub').textContent = 'Sorteando...';
+  document.getElementById('slotSub').classList.add('live');
+  spin(0, 2600, () => resolveWinners(n));
+}
+
+function spin(elapsed, duration, done) {
+  if (elapsed >= duration) { clearTimeout(spinTimer); done(); return; }
+  const p = participants[Math.floor(Math.random() * participants.length)];
+  document.getElementById('slotName').textContent = '@' + p.username;
+  const progress = elapsed / duration;
+  let interval = 50;
+  if (progress > 0.65) interval = 50 + ((progress - 0.65) / 0.35) * 430;
+  spinTimer = setTimeout(() => spin(elapsed + interval, duration, done), interval);
+}
+
+function resolveWinners(n) {
+  const pool = [...participants];
+  for (let i = 0; i < n; i++) {
+    if (!pool.length) break;
+    const idx = Math.floor(Math.random() * pool.length);
+    winners.push(pool.splice(idx, 1)[0]);
+  }
+  isSpinning = false;
+  document.getElementById('raffleBtn').disabled = false;
+  showWinners();
+}
+
+function showWinners() {
+  const w = winners[0]; if (!w) return;
+  document.getElementById('slotName').textContent = '@' + w.username;
+  document.getElementById('slotSub').textContent  = 'VENCEDOR!';
+  const wSec = document.getElementById('winnerSection');
+  wSec.style.display = 'block';
+  document.getElementById('winnerCard').style.display = 'block';
+  const av = document.getElementById('wAv');
+  av.src = w.avatar || avatarSvg(w.username);
+  av.onerror = () => { av.src = avatarSvg(w.username); };
+  document.getElementById('wName').textContent    = '@' + w.username;
+  document.getElementById('wComment').textContent = w.text ? '"' + w.text.slice(0,80) + (w.text.length>80?'...':'') + '"' : '';
+  if (winners.length > 1) {
+    document.getElementById('mwCard').style.display = 'block';
+    document.getElementById('mwList').innerHTML = winners.map((x,i) =>
+      '<li style="animation-delay:' + (i*0.07) + 's"><span class="mw-rank">#' + (i+1) + '</span>' +
+      '<img src="' + (x.avatar||avatarSvg(x.username)) + '" onerror="this.src=\'' + avatarSvg(x.username) + '\'">' +
+      '<span>@' + x.username + '</span></li>').join('');
+  }
+  launchConfetti();
+  setTimeout(() => wSec.scrollIntoView({ behavior:'smooth', block:'center' }), 160);
+}
+
+function resetRaffle() {
+  document.getElementById('winnerSection').style.display = 'none';
+  document.getElementById('mwCard').style.display = 'none';
+  document.getElementById('slotName').textContent = '?';
+  document.getElementById('slotSub').textContent  = 'Aguardando...';
+  document.getElementById('slotSub').classList.remove('live');
+  document.getElementById('slotGlow').classList.remove('on');
+}
+
+function copyResult() {
+  const t = winners.map((w,i) => (i+1) + '. @' + w.username).join('\n');
+  navigator.clipboard.writeText(t).then(() => alert('Resultado copiado!'));
+}
+
+const PAIRS = [['#6366f1','#8b5cf6'],['#ec4899','#f43f5e'],['#06b6d4','#3b82f6'],['#10b981','#059669'],['#f59e0b','#ef4444'],['#8b5cf6','#a855f7']];
+function avatarSvg(name) {
+  const l = (name||'?').charAt(0).toUpperCase();
+  const [c1,c2] = PAIRS[name.charCodeAt(0) % PAIRS.length];
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">' +
+    '<stop offset="0%" stop-color="' + c1 + '"/><stop offset="100%" stop-color="' + c2 + '"/></linearGradient></defs>' +
+    '<circle cx="22" cy="22" r="22" fill="url(#g)"/>' +
+    '<text x="22" y="28" text-anchor="middle" fill="white" font-size="18" font-weight="700" font-family="sans-serif">' + l + '</text></svg>');
+}
+
+function launchConfetti() {
+  const cvs = document.getElementById('confetti');
+  cvs.style.display = 'block'; cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+  const ctx = cvs.getContext('2d');
+  const COLS = ['#833ab4','#c13584','#e1306c','#f77737','#fcaf45','#f472b6'];
+  const pp = Array.from({length:130}, () => ({
+    x:Math.random()*cvs.width, y:-10-Math.random()*70,
+    w:7+Math.random()*9, h:4+Math.random()*5,
+    r:Math.random()*Math.PI*2, vx:(Math.random()-.5)*5, vy:2.5+Math.random()*4.5,
+    vr:(Math.random()-.5)*.25, col:COLS[Math.floor(Math.random()*COLS.length)]
+  }));
+  let f = 0;
+  (function draw() {
+    ctx.clearRect(0,0,cvs.width,cvs.height);
+    pp.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; p.vy+=.06;
+      ctx.save(); ctx.globalAlpha=Math.max(0,1-f/210);
+      ctx.translate(p.x,p.y); ctx.rotate(p.r);
+      ctx.fillStyle=p.col; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    f++;
+    if (f < 220) requestAnimationFrame(draw);
+    else { ctx.clearRect(0,0,cvs.width,cvs.height); cvs.style.display='none'; }
+  })();
+}
+
+function setLoading(v) { document.getElementById('loadBtn').disabled = v; }
+function setProgress(p) { document.getElementById('prog').style.width = p + '%'; }
+function setStatus(msg, type) {
+  document.getElementById('feedback').style.display = 'block';
+  const st = document.getElementById('statusMsg');
+  st.textContent = msg;
+  st.className = 'status' + (type ? ' '+type : '');
+}
+
+document.getElementById('urlInput').addEventListener('keydown', e => { if (e.key === 'Enter') loadComments(); });
+</script>
+</body>
+</html>
