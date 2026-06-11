@@ -6,239 +6,198 @@
 <title>Sorteio Instagram</title>
 <style>
 :root {
-  --bg: #fafafa;
-  --card: #ffffff;
-  --border: #efefef;
-  --ig1: #833ab4;
-  --ig2: #c13584;
-  --ig3: #e1306c;
-  --ig4: #f77737;
-  --ig5: #fcaf45;
-  --accent: #e1306c;
-  --glow: rgba(225,48,108,0.18);
-  --text: #1a1a1a;
-  --muted: #737373;
-  --success: #2ecc71;
-  --danger: #e74c3c;
+  --ig1: #833ab4; --ig2: #c13584; --ig3: #e1306c; --ig4: #f77737; --ig5: #fcaf45;
   --grad: linear-gradient(45deg, var(--ig1), var(--ig2), var(--ig3), var(--ig4), var(--ig5));
+  --text: #1a1a1a; --muted: #8e8e8e; --border: #dbdbdb; --bg: #fafafa;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', sans-serif; min-height: 100vh; }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, 'Segoe UI', sans-serif;
+.page {
   min-height: 100vh;
-  overflow-x: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 20px;
 }
 
-.wrap {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 52px 24px;
-}
-
-/* ── Header ── */
-.hdr { text-align: center; margin-bottom: 52px; }
-.hdr-logo {
-  width: 56px; height: 56px; border-radius: 16px;
+/* â”€â”€ Logo â”€â”€ */
+.logo {
+  width: 64px; height: 64px; border-radius: 18px;
   background: var(--grad);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 18px;
-  font-size: 28px;
-  box-shadow: 0 4px 20px rgba(225,48,108,.35);
+  font-size: 32px; margin-bottom: 20px;
+  box-shadow: 0 6px 24px rgba(225,48,108,.35);
 }
-.hdr-badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: linear-gradient(45deg,rgba(131,58,180,.08),rgba(225,48,108,.08));
-  border: 1px solid rgba(225,48,108,.2);
-  border-radius: 100px; padding: 5px 15px;
-  font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .1em;
-  color: var(--ig3); margin-bottom: 18px;
+h1 {
+  font-size: 28px; font-weight: 900; letter-spacing: -.02em;
+  background: var(--grad); -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 6px; text-align: center;
 }
-.hdr h1 {
-  font-size: clamp(26px,5vw,42px); font-weight: 900; letter-spacing: -.02em;
-  background: var(--grad);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; margin-bottom: 10px;
-}
-.hdr p { color: var(--muted); font-size: 14px; }
+.sub { color: var(--muted); font-size: 14px; margin-bottom: 40px; text-align: center; }
 
-/* ── Card ── */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px; padding: 28px 30px;
-  margin-bottom: 18px;
-  box-shadow: 0 2px 16px rgba(0,0,0,.07);
+/* â”€â”€ URL box â”€â”€ */
+.url-box {
+  width: 100%; max-width: 540px;
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 20px 22px;
+  box-shadow: 0 2px 20px rgba(0,0,0,.07);
+  margin-bottom: 14px;
 }
-.card-title {
-  font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--ig2); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 9px;
-}
-.step {
-  width: 21px; height: 21px; border-radius: 50%;
-  background: var(--grad); color: #fff;
-  font-size: 10px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-
-/* ── Inputs ── */
-.row { display: flex; gap: 10px; align-items: flex-end; }
-.row .fg { flex: 1; }
-label.lbl {
-  display: block; font-size: 11px; font-weight: 600;
-  color: var(--muted); text-transform: uppercase;
-  letter-spacing: .07em; margin-bottom: 7px;
-}
-input.inp {
-  width: 100%; background: #fafafa;
-  border: 1.5px solid #dbdbdb;
-  border-radius: 12px; padding: 12px 15px;
-  color: var(--text); font-size: 14px; outline: none;
+.url-box label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 10px; }
+.url-row { display: flex; gap: 10px; }
+input {
+  flex: 1; background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 11px 14px; font-size: 14px; color: var(--text); outline: none;
   transition: border-color .2s, box-shadow .2s;
 }
-input.inp:focus { border-color: var(--ig3); box-shadow: 0 0 0 3px var(--glow); }
-input.inp::placeholder { color: #c7c7c7; }
+input:focus { border-color: var(--ig3); box-shadow: 0 0 0 3px rgba(225,48,108,.15); }
+input::placeholder { color: #c7c7c7; }
 
-/* ── Buttons ── */
-.btn {
-  border: none; border-radius: 12px;
-  padding: 12px 22px; font-size: 14px; font-weight: 600;
+.btn-load {
+  background: var(--grad); color: #fff; border: none;
+  border-radius: 10px; padding: 11px 22px; font-size: 14px; font-weight: 700;
   cursor: pointer; white-space: nowrap;
-  display: inline-flex; align-items: center; gap: 6px;
   transition: transform .15s, box-shadow .15s, opacity .15s;
+  box-shadow: 0 4px 16px rgba(225,48,108,.3);
 }
-.btn-p {
-  background: var(--grad); color: #fff;
-  box-shadow: 0 4px 20px rgba(225,48,108,.3);
-}
-.btn-p:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(225,48,108,.45); }
-.btn-p:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
-.btn-g {
-  background: transparent; color: var(--muted);
-  border: 1.5px solid #dbdbdb; font-size: 12px; padding: 8px 14px;
-}
-.btn-g:hover { border-color: var(--ig3); color: var(--ig3); }
+.btn-load:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(225,48,108,.45); }
+.btn-load:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
-/* ── Progress ── */
-.prog-wrap { background: #efefef; border-radius: 100px; height: 5px; overflow: hidden; margin: 14px 0 7px; }
+/* â”€â”€ Progress â”€â”€ */
+.prog-wrap { height: 4px; background: #efefef; border-radius: 100px; overflow: hidden; margin-top: 14px; display: none; }
 .prog-bar  { height: 100%; background: var(--grad); border-radius: 100px; width: 0%; transition: width .4s ease; }
-.status    { font-size: 12px; color: var(--muted); text-align: center; }
-.status.err { color: var(--danger); }
-.status.ok  { color: var(--success); }
+.msg { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; display: none; }
+.msg.err { color: #e74c3c; }
+.msg.ok  { color: #27ae60; font-weight: 600; }
 
-/* ── Options ── */
-.opts { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: 14px 0; }
-.opt-lbl { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); cursor: pointer; user-select: none; }
-.opt-lbl input[type=checkbox] { accent-color: var(--ig3); }
-.opt-inp { background: #fafafa; border: 1.5px solid #dbdbdb; border-radius: 8px; padding: 5px 10px; color: var(--text); font-size: 12px; outline: none; width: 110px; }
-.opt-inp:focus { border-color: var(--ig3); }
+/* â”€â”€ Post preview â”€â”€ */
+#postPreview {
+  width: 100%; max-width: 540px;
+  display: none; margin-bottom: 14px;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 2px 20px rgba(0,0,0,.07);
+}
+#postPreview iframe {
+  width: 100%; border: none; display: block;
+  min-height: 560px; border-radius: 20px;
+}
 
-/* ── Participants ── */
-.p-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-.p-cnt { font-size: 13px; color: var(--muted); }
-.p-cnt strong { color: var(--ig3); font-size: 15px; font-weight: 700; }
-.p-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-  gap: 9px; max-height: 270px; overflow-y: auto; padding-right: 3px;
+/* â”€â”€ Comments list â”€â”€ */
+#commentsList {
+  width: 100%; max-width: 540px;
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 20px 22px;
+  box-shadow: 0 2px 20px rgba(0,0,0,.07);
+  display: none; margin-bottom: 14px;
 }
-.p-grid::-webkit-scrollbar { width: 3px; }
-.p-grid::-webkit-scrollbar-thumb { background: #dbdbdb; border-radius: 2px; }
-.p-card {
-  background: #fafafa; border: 1px solid #efefef;
-  border-radius: 12px; padding: 12px 8px; text-align: center;
-  animation: popIn .22s cubic-bezier(.34,1.56,.64,1) backwards;
+#commentsList h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 14px; }
+.comments-scroll { max-height: 260px; overflow-y: auto; padding-right: 4px; }
+.comments-scroll::-webkit-scrollbar { width: 3px; }
+.comments-scroll::-webkit-scrollbar-thumb { background: #dbdbdb; border-radius: 2px; }
+.comment-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid #f0f0f0;
+  animation: fadeUp .2s ease backwards;
 }
-@keyframes popIn {
-  from { opacity:0; transform: scale(.82) translateY(6px); }
-  to   { opacity:1; transform: scale(1) translateY(0); }
-}
-.p-av {
-  width: 42px; height: 42px; border-radius: 50%;
-  display: block; margin: 0 auto 7px; object-fit: cover;
-  border: 2px solid transparent;
-  background-image: var(--grad), white;
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-}
-.p-user { font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.comment-row:last-child { border-bottom: none; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+.c-av { width: 36px; height: 36px; border-radius: 50%; flex-shrink:0; object-fit: cover; border: 1.5px solid #efefef; }
+.c-body { flex: 1; min-width: 0; }
+.c-user { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.c-text { font-size: 13px; color: var(--muted); line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 
-/* ── Slot ── */
+/* â”€â”€ Raffle area â”€â”€ */
+#raffleArea {
+  width: 100%; max-width: 540px;
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 32px 24px;
+  box-shadow: 0 2px 20px rgba(0,0,0,.07);
+  text-align: center; display: none;
+}
+
+.info-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(45deg,rgba(131,58,180,.07),rgba(225,48,108,.07));
+  border: 1px solid rgba(225,48,108,.18);
+  border-radius: 100px; padding: 5px 14px;
+  font-size: 12px; font-weight: 600; color: var(--ig2);
+  margin-bottom: 24px;
+}
+
+/* â”€â”€ Slot â”€â”€ */
 .slot {
-  background: linear-gradient(135deg,rgba(131,58,180,.06),rgba(225,48,108,.06),rgba(247,119,55,.06));
-  border: 1.5px solid rgba(225,48,108,.15);
-  border-radius: 20px; padding: 40px 24px; margin: 22px 0;
-  text-align: center; position: relative; overflow: hidden;
-  min-height: 135px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(135deg,rgba(131,58,180,.05),rgba(225,48,108,.05),rgba(247,119,55,.05));
+  border: 1.5px solid rgba(225,48,108,.13);
+  border-radius: 16px; padding: 36px 20px; margin-bottom: 28px;
+  position: relative; overflow: hidden;
 }
 .slot-glow {
-  position: absolute; inset: -1px; border-radius: 20px;
-  background: linear-gradient(45deg,rgba(131,58,180,.12),rgba(225,48,108,.12),rgba(252,175,69,.12));
+  position: absolute; inset: 0; border-radius: 16px;
+  background: linear-gradient(45deg,rgba(131,58,180,.1),rgba(225,48,108,.1),rgba(252,175,69,.1));
   opacity: 0; transition: opacity .4s; pointer-events: none;
 }
 .slot-glow.on { opacity: 1; }
 .slot-name {
-  font-size: clamp(26px,4.5vw,50px); font-weight: 900; letter-spacing: -.025em;
-  background: var(--grad);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; position: relative; z-index: 1;
-  min-height: 1.2em; display: flex; align-items: center;
+  font-size: clamp(24px,5vw,48px); font-weight: 900; letter-spacing: -.025em;
+  background: var(--grad); -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; background-clip: text;
+  position: relative; z-index: 1; line-height: 1.1;
 }
-.slot-sub {
-  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .15em;
-  color: var(--muted); margin-top: 7px; position: relative; z-index: 1; transition: color .3s;
+.slot-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .15em; color: var(--muted); margin-top: 8px;
+  position: relative; z-index: 1; transition: color .3s;
 }
-.slot-sub.live { color: var(--ig3); }
+.slot-label.live { color: var(--ig3); }
 
-/* ── Raffle btn ── */
-.raffle-ctr { text-align: center; }
 .btn-raffle {
-  background: var(--grad); color: #fff; border: none; border-radius: 16px;
-  padding: 17px 50px; font-size: 15px; font-weight: 800; cursor: pointer;
-  letter-spacing: .08em; text-transform: uppercase;
-  box-shadow: 0 8px 32px rgba(225,48,108,.35);
+  width: 100%; background: var(--grad); color: #fff; border: none;
+  border-radius: 14px; padding: 18px; font-size: 16px; font-weight: 800;
+  cursor: pointer; letter-spacing: .06em; text-transform: uppercase;
+  box-shadow: 0 8px 28px rgba(225,48,108,.35);
   transition: transform .15s, box-shadow .15s, opacity .15s;
 }
-.btn-raffle:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(225,48,108,.5); }
-.btn-raffle:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-raffle:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(225,48,108,.5); }
+.btn-raffle:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-/* ── Winner ── */
-.winner-card {
+/* â”€â”€ Winner â”€â”€ */
+#winnerArea {
+  width: 100%; max-width: 540px;
   background: linear-gradient(135deg,rgba(131,58,180,.06),rgba(225,48,108,.06),rgba(252,175,69,.06));
-  border: 1.5px solid rgba(225,48,108,.2);
-  border-radius: 24px; padding: 44px 28px; text-align: center; margin-top: 18px;
-  animation: wPop .55s cubic-bezier(.34,1.56,.64,1) forwards;
+  border: 1.5px solid rgba(225,48,108,.22);
+  border-radius: 20px; padding: 40px 24px;
+  text-align: center; display: none; margin-top: 14px;
+  animation: wPop .5s cubic-bezier(.34,1.56,.64,1) forwards;
 }
-@keyframes wPop { from { opacity:0; transform:scale(.78); } to { opacity:1; transform:scale(1); } }
-.w-emoji  { font-size: 54px; display: block; margin-bottom: 16px; }
-.w-tag    { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--ig2); margin-bottom: 14px; }
-.w-av     { width: 80px; height: 80px; border-radius: 50%; display: block; margin: 0 auto 16px; object-fit: cover; padding: 3px; background: var(--grad); box-shadow: 0 4px 20px rgba(225,48,108,.3); }
-.w-name   { font-size: clamp(22px,4vw,36px); font-weight: 900; letter-spacing: -.02em; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 7px; }
-.w-comment { font-size: 13px; color: var(--muted); font-style: italic; max-width: 380px; margin: 0 auto 22px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.w-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+@keyframes wPop { from { opacity:0; transform:scale(.8); } to { opacity:1; transform:scale(1); } }
+.w-trophy { font-size: 52px; margin-bottom: 14px; display: block; }
+.w-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: var(--ig2); margin-bottom: 14px; }
+.w-av {
+  width: 80px; height: 80px; border-radius: 50%;
+  display: block; margin: 0 auto 16px; object-fit: cover;
+  padding: 3px; background: var(--grad);
+  box-shadow: 0 4px 20px rgba(225,48,108,.3);
+}
+.w-name {
+  font-size: clamp(20px,4vw,34px); font-weight: 900; letter-spacing: -.02em;
+  background: var(--grad); -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;
+}
+.w-comment { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 24px; max-width: 360px; margin-left: auto; margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.w-btns { display: flex; gap: 10px; justify-content: center; }
+.btn-sec {
+  background: transparent; color: var(--muted);
+  border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 9px 18px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: border-color .2s, color .2s;
+}
+.btn-sec:hover { border-color: var(--ig3); color: var(--ig3); }
 
-/* ── Multi winners ── */
-.mw-list { list-style: none; }
-.mw-list li { display: flex; align-items: center; gap: 11px; padding: 10px 13px; background: #fafafa; border-radius: 11px; margin-bottom: 7px; font-size: 14px; animation: fadeUp .3s ease backwards; }
-@keyframes fadeUp { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
-.mw-list li img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink:0; }
-.mw-rank { font-size: 11px; color: var(--muted); font-weight: 700; min-width: 24px; }
-
-/* ── Confetti ── */
 #confetti { position: fixed; inset:0; pointer-events:none; z-index:100; display:none; }
 
-/* ── Responsive ── */
-@media(max-width:600px){
-  .wrap { padding: 30px 16px; }
-  .card { padding: 20px 16px; }
-  .row  { flex-direction: column; }
-  .btn-raffle { padding: 15px 34px; font-size: 13px; }
+@media(max-width:500px) {
+  .url-row { flex-direction: column; }
+  .btn-load { width: 100%; }
 }
 </style>
 </head>
@@ -246,144 +205,139 @@ input.inp::placeholder { color: #c7c7c7; }
 
 <canvas id="confetti"></canvas>
 
-<div class="wrap">
+<div class="page">
+  <div class="logo">&#128247;</div>
+  <h1>Sorteio Instagram</h1>
+  <p class="sub">Cole a URL do post e sorteie o vencedor</p>
 
-  <div class="hdr">
-    <div class="hdr-logo">&#128247;</div>
-    <div class="hdr-badge">&#10024; Sorteio de Comentarios</div>
-    <h1>Sorteio Instagram</h1>
-    <p>Cole a URL do post, carregue os comentarios e sorteie o vencedor</p>
+  <!-- URL input -->
+  <div class="url-box">
+    <label>Link do post do Instagram</label>
+    <div class="url-row">
+      <input id="urlInput" type="text" placeholder="https://www.instagram.com/p/ABC123/">
+      <button class="btn-load" id="loadBtn" onclick="loadComments()">Carregar</button>
+    </div>
+    <div class="prog-wrap" id="progWrap"><div class="prog-bar" id="prog"></div></div>
+    <div class="msg" id="msg"></div>
   </div>
 
-  <div class="card">
-    <div class="card-title"><span class="step">1</span> URL do Post</div>
-    <div class="row">
-      <div class="fg">
-        <label class="lbl">Link do post do Instagram</label>
-        <input id="urlInput" class="inp" type="text" placeholder="https://www.instagram.com/p/ABC123xyz/">
-      </div>
-      <button class="btn btn-p" id="loadBtn" onclick="loadComments()">Carregar</button>
-    </div>
-    <div id="feedback" style="display:none;">
-      <div class="prog-wrap"><div class="prog-bar" id="prog"></div></div>
-      <div class="status" id="statusMsg"></div>
-    </div>
+  <!-- Post preview -->
+  <div id="postPreview">
+    <iframe id="postFrame" scrolling="no" allowtransparency="true"></iframe>
   </div>
 
-  <div class="card" id="pSection" style="display:none;">
-    <div class="p-hdr">
-      <div class="card-title" style="margin-bottom:0;"><span class="step">2</span> Participantes</div>
-      <div class="p-cnt"><strong id="pCount">0</strong> unicos</div>
-    </div>
-    <div class="opts">
-      <label class="opt-lbl"><input type="checkbox" id="optDedup" checked> 1 voto por usuario</label>
-      <label class="opt-lbl"><input type="checkbox" id="optWord"> Exigir palavra:</label>
-      <input class="opt-inp" id="wordInput" placeholder='ex: "quero!"'>
-    </div>
-    <div class="p-grid" id="pGrid"></div>
-    <div style="text-align:right;margin-top:12px;">
-      <button class="btn btn-g" onclick="applyFilters()">&#8635; Aplicar filtros</button>
-    </div>
+  <!-- Comments list -->
+  <div id="commentsList">
+    <h3 id="commentsTitle">Comentarios</h3>
+    <div class="comments-scroll" id="commentsScroll"></div>
   </div>
 
-  <div class="card" id="raffleSection" style="display:none;">
-    <div class="card-title"><span class="step">3</span> Sorteio</div>
+  <!-- Raffle -->
+  <div id="raffleArea">
+    <div class="info-pill" id="infoPill">0 participantes</div>
     <div class="slot">
       <div class="slot-glow" id="slotGlow"></div>
       <div class="slot-name" id="slotName">?</div>
-      <div class="slot-sub" id="slotSub">Aguardando...</div>
+      <div class="slot-label" id="slotLabel">Pronto para sortear</div>
     </div>
-    <div class="raffle-ctr">
-      <div class="opts" style="justify-content:center;margin-bottom:18px;">
-        <label class="opt-lbl">
-          Ganhadores:
-          <input type="number" id="nWinners" class="opt-inp" value="1" min="1" max="100" style="width:58px;text-align:center;">
-        </label>
-      </div>
-      <button class="btn-raffle" id="raffleBtn" onclick="startRaffle()">&#127922; SORTEAR AGORA</button>
-    </div>
+    <button class="btn-raffle" id="raffleBtn" onclick="startRaffle()">&#127922; SORTEAR AGORA</button>
   </div>
 
-  <div id="winnerSection" style="display:none;">
-    <div class="winner-card" id="winnerCard">
-      <span class="w-emoji">&#127881;</span>
-      <div class="w-tag">Vencedor</div>
-      <img id="wAv" class="w-av" src="" alt="">
-      <div class="w-name" id="wName">@username</div>
-      <div class="w-comment" id="wComment"></div>
-      <div class="w-btns">
-        <button class="btn btn-g" onclick="resetRaffle()">&#8635; Novo sorteio</button>
-        <button class="btn btn-g" onclick="copyResult()">&#128203; Copiar resultado</button>
-      </div>
-    </div>
-    <div class="card" id="mwCard" style="display:none;margin-top:16px;">
-      <div class="card-title">Todos os Ganhadores</div>
-      <ul class="mw-list" id="mwList"></ul>
+  <!-- Winner -->
+  <div id="winnerArea">
+    <span class="w-trophy">&#127881;</span>
+    <div class="w-tag">Vencedor</div>
+    <img id="wAv" class="w-av" src="" alt="">
+    <div class="w-name" id="wName"></div>
+    <div class="w-comment" id="wComment"></div>
+    <div class="w-btns">
+      <button class="btn-sec" onclick="resetRaffle()">&#8635; Sortear novamente</button>
+      <button class="btn-sec" onclick="copyResult()">&#128203; Copiar</button>
     </div>
   </div>
-
 </div>
 
 <script>
-let rawData = [], participants = [], winners = [], isSpinning = false, spinTimer = null;
+let participants = [], winners = [], isSpinning = false, spinTimer = null;
 
 async function loadComments() {
   const url = document.getElementById('urlInput').value.trim();
-  if (!url) return setStatus('Cole a URL do post.', 'err');
-  setLoading(true); setProgress(10); setStatus('Carregando comentarios...'); rawData = [];
+  if (!url) return showMsg('Cole a URL do post.', 'err');
+
+  document.getElementById('loadBtn').disabled = true;
+  document.getElementById('progWrap').style.display = 'block';
+  document.getElementById('raffleArea').style.display = 'none';
+  document.getElementById('winnerArea').style.display = 'none';
+  document.getElementById('commentsList').style.display = 'none';
+  showPostPreview(url);
+  setProgress(15); showMsg('Carregando comentarios...');
+
   try {
     const res  = await fetch('/api/comments?url=' + encodeURIComponent(url));
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || 'Erro desconhecido');
-    setProgress(100);
-    rawData = data.comments || [];
-    applyFilters();
-    setStatus(rawData.length + ' comentarios — ' + participants.length + ' participantes unicos.', 'ok');
-  } catch(e) { setStatus('Erro: ' + e.message, 'err'); setProgress(0); }
-  setLoading(false);
-}
 
-function applyFilters() {
-  const dedup = document.getElementById('optDedup').checked;
-  const useW  = document.getElementById('optWord').checked;
-  const word  = document.getElementById('wordInput').value.trim().toLowerCase();
-  let list = [...rawData];
-  if (useW && word) list = list.filter(c => c.text && c.text.toLowerCase().includes(word));
-  if (dedup) {
+    // dedup por username â€” 1 entrada por pessoa
     const seen = new Set();
-    list = list.filter(c => { if (seen.has(c.username)) return false; seen.add(c.username); return true; });
+    participants = data.comments.filter(c => {
+      if (seen.has(c.username)) return false;
+      seen.add(c.username); return true;
+    });
+
+    setProgress(100);
+    showMsg(data.comments.length + ' comentarios â€” ' + participants.length + ' participantes unicos.', 'ok');
+    document.getElementById('infoPill').textContent = participants.length + ' participantes';
+    renderComments(data.comments);
+    document.getElementById('raffleArea').style.display = 'block';
+    document.getElementById('slotName').textContent = '?';
+    document.getElementById('slotLabel').textContent = 'Pronto para sortear';
+    document.getElementById('slotLabel').classList.remove('live');
+    document.getElementById('slotGlow').classList.remove('on');
+  } catch(e) {
+    showMsg('Erro: ' + e.message, 'err');
+    setProgress(0);
   }
-  participants = list;
-  renderParticipants();
+
+  document.getElementById('loadBtn').disabled = false;
 }
 
-function renderParticipants() {
-  document.getElementById('pSection').style.display = 'block';
-  document.getElementById('pCount').textContent = participants.length;
-  const grid = document.getElementById('pGrid');
-  grid.innerHTML = '';
-  participants.forEach((p, i) => {
-    const el = document.createElement('div');
-    el.className = 'p-card';
-    el.style.animationDelay = Math.min(i * 0.018, 0.8) + 's';
-    const src = p.avatar || avatarSvg(p.username);
-    el.innerHTML = '<img class="p-av" src="' + src + '" alt="' + p.username + '" onerror="this.src=\'' + avatarSvg(p.username) + '\'">' +
-                   '<div class="p-user">@' + p.username + '</div>';
-    grid.appendChild(el);
+function showPostPreview(url) {
+  const match = url.match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/);
+  if (!match) return;
+  const shortcode = match[1];
+  const embedUrl = 'https://www.instagram.com/p/' + shortcode + '/embed/';
+  document.getElementById('postFrame').src = embedUrl;
+  document.getElementById('postPreview').style.display = 'block';
+}
+
+function renderComments(comments) {
+  const wrap = document.getElementById('commentsList');
+  const scroll = document.getElementById('commentsScroll');
+  document.getElementById('commentsTitle').textContent = comments.length + ' comentarios';
+  scroll.innerHTML = '';
+  comments.forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'comment-row';
+    row.style.animationDelay = Math.min(i * 0.012, 0.5) + 's';
+    const av = c.avatar || avatarSvg(c.username);
+    row.innerHTML =
+      '<img class="c-av" src="' + av + '" onerror="this.src=\'' + avatarSvg(c.username) + '\'">' +
+      '<div class="c-body"><div class="c-user">@' + c.username + '</div>' +
+      '<div class="c-text">' + (c.text || '') + '</div></div>';
+    scroll.appendChild(row);
   });
-  if (participants.length > 0) document.getElementById('raffleSection').style.display = 'block';
+  wrap.style.display = 'block';
 }
 
 function startRaffle() {
   if (isSpinning || !participants.length) return;
-  const n = Math.max(1, Math.min(parseInt(document.getElementById('nWinners').value) || 1, participants.length));
-  winners = []; isSpinning = true;
+  isSpinning = true;
   document.getElementById('raffleBtn').disabled = true;
-  document.getElementById('winnerSection').style.display = 'none';
+  document.getElementById('winnerArea').style.display = 'none';
   document.getElementById('slotGlow').classList.add('on');
-  document.getElementById('slotSub').textContent = 'Sorteando...';
-  document.getElementById('slotSub').classList.add('live');
-  spin(0, 2600, () => resolveWinners(n));
+  document.getElementById('slotLabel').textContent = 'Sorteando...';
+  document.getElementById('slotLabel').classList.add('live');
+  spin(0, 2800, pickWinner);
 }
 
 function spin(elapsed, duration, done) {
@@ -392,68 +346,54 @@ function spin(elapsed, duration, done) {
   document.getElementById('slotName').textContent = '@' + p.username;
   const progress = elapsed / duration;
   let interval = 50;
-  if (progress > 0.65) interval = 50 + ((progress - 0.65) / 0.35) * 430;
+  if (progress > 0.65) interval = 50 + ((progress - 0.65) / 0.35) * 450;
   spinTimer = setTimeout(() => spin(elapsed + interval, duration, done), interval);
 }
 
-function resolveWinners(n) {
-  const pool = [...participants];
-  for (let i = 0; i < n; i++) {
-    if (!pool.length) break;
-    const idx = Math.floor(Math.random() * pool.length);
-    winners.push(pool.splice(idx, 1)[0]);
-  }
+function pickWinner() {
+  const winner = participants[Math.floor(Math.random() * participants.length)];
+  winners = [winner];
   isSpinning = false;
   document.getElementById('raffleBtn').disabled = false;
-  showWinners();
-}
+  document.getElementById('slotName').textContent = '@' + winner.username;
+  document.getElementById('slotLabel').textContent = 'VENCEDOR!';
 
-function showWinners() {
-  const w = winners[0]; if (!w) return;
-  document.getElementById('slotName').textContent = '@' + w.username;
-  document.getElementById('slotSub').textContent  = 'VENCEDOR!';
-  const wSec = document.getElementById('winnerSection');
-  wSec.style.display = 'block';
-  document.getElementById('winnerCard').style.display = 'block';
+  const wa = document.getElementById('winnerArea');
+  wa.style.display = 'block';
+
   const av = document.getElementById('wAv');
-  av.src = w.avatar || avatarSvg(w.username);
-  av.onerror = () => { av.src = avatarSvg(w.username); };
-  document.getElementById('wName').textContent    = '@' + w.username;
-  document.getElementById('wComment').textContent = w.text ? '"' + w.text.slice(0,80) + (w.text.length>80?'...':'') + '"' : '';
-  if (winners.length > 1) {
-    document.getElementById('mwCard').style.display = 'block';
-    document.getElementById('mwList').innerHTML = winners.map((x,i) =>
-      '<li style="animation-delay:' + (i*0.07) + 's"><span class="mw-rank">#' + (i+1) + '</span>' +
-      '<img src="' + (x.avatar||avatarSvg(x.username)) + '" onerror="this.src=\'' + avatarSvg(x.username) + '\'">' +
-      '<span>@' + x.username + '</span></li>').join('');
-  }
+  av.src = winner.avatar || avatarSvg(winner.username);
+  av.onerror = () => { av.src = avatarSvg(winner.username); };
+
+  document.getElementById('wName').textContent = '@' + winner.username;
+  document.getElementById('wComment').textContent = winner.text
+    ? '"' + winner.text.slice(0, 80) + (winner.text.length > 80 ? '...' : '') + '"' : '';
+
   launchConfetti();
-  setTimeout(() => wSec.scrollIntoView({ behavior:'smooth', block:'center' }), 160);
+  setTimeout(() => wa.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
 }
 
 function resetRaffle() {
-  document.getElementById('winnerSection').style.display = 'none';
-  document.getElementById('mwCard').style.display = 'none';
+  document.getElementById('winnerArea').style.display = 'none';
   document.getElementById('slotName').textContent = '?';
-  document.getElementById('slotSub').textContent  = 'Aguardando...';
-  document.getElementById('slotSub').classList.remove('live');
+  document.getElementById('slotLabel').textContent = 'Pronto para sortear';
+  document.getElementById('slotLabel').classList.remove('live');
   document.getElementById('slotGlow').classList.remove('on');
 }
 
 function copyResult() {
-  const t = winners.map((w,i) => (i+1) + '. @' + w.username).join('\n');
-  navigator.clipboard.writeText(t).then(() => alert('Resultado copiado!'));
+  navigator.clipboard.writeText('@' + (winners[0]?.username || '')).then(() => alert('Copiado!'));
 }
 
 const PAIRS = [['#6366f1','#8b5cf6'],['#ec4899','#f43f5e'],['#06b6d4','#3b82f6'],['#10b981','#059669'],['#f59e0b','#ef4444'],['#8b5cf6','#a855f7']];
 function avatarSvg(name) {
   const l = (name||'?').charAt(0).toUpperCase();
-  const [c1,c2] = PAIRS[name.charCodeAt(0) % PAIRS.length];
+  const [c1,c2] = PAIRS[(name||'').charCodeAt(0) % PAIRS.length];
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">' +
+    '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">' +
     '<stop offset="0%" stop-color="' + c1 + '"/><stop offset="100%" stop-color="' + c2 + '"/></linearGradient></defs>' +
-    '<circle cx="22" cy="22" r="22" fill="url(#g)"/>' +
-    '<text x="22" y="28" text-anchor="middle" fill="white" font-size="18" font-weight="700" font-family="sans-serif">' + l + '</text></svg>');
+    '<circle cx="40" cy="40" r="40" fill="url(#g)"/>' +
+    '<text x="40" y="50" text-anchor="middle" fill="white" font-size="28" font-weight="700" font-family="sans-serif">' + l + '</text></svg>');
 }
 
 function launchConfetti() {
@@ -461,10 +401,10 @@ function launchConfetti() {
   cvs.style.display = 'block'; cvs.width = window.innerWidth; cvs.height = window.innerHeight;
   const ctx = cvs.getContext('2d');
   const COLS = ['#833ab4','#c13584','#e1306c','#f77737','#fcaf45','#f472b6'];
-  const pp = Array.from({length:130}, () => ({
-    x:Math.random()*cvs.width, y:-10-Math.random()*70,
-    w:7+Math.random()*9, h:4+Math.random()*5,
-    r:Math.random()*Math.PI*2, vx:(Math.random()-.5)*5, vy:2.5+Math.random()*4.5,
+  const pp = Array.from({length:140}, () => ({
+    x:Math.random()*cvs.width, y:-15-Math.random()*80,
+    w:8+Math.random()*8, h:4+Math.random()*5,
+    r:Math.random()*Math.PI*2, vx:(Math.random()-.5)*6, vy:3+Math.random()*4,
     vr:(Math.random()-.5)*.25, col:COLS[Math.floor(Math.random()*COLS.length)]
   }));
   let f = 0;
@@ -472,7 +412,7 @@ function launchConfetti() {
     ctx.clearRect(0,0,cvs.width,cvs.height);
     pp.forEach(p => {
       p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; p.vy+=.06;
-      ctx.save(); ctx.globalAlpha=Math.max(0,1-f/210);
+      ctx.save(); ctx.globalAlpha=Math.max(0,1-f/200);
       ctx.translate(p.x,p.y); ctx.rotate(p.r);
       ctx.fillStyle=p.col; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
       ctx.restore();
@@ -483,13 +423,11 @@ function launchConfetti() {
   })();
 }
 
-function setLoading(v) { document.getElementById('loadBtn').disabled = v; }
 function setProgress(p) { document.getElementById('prog').style.width = p + '%'; }
-function setStatus(msg, type) {
-  document.getElementById('feedback').style.display = 'block';
-  const st = document.getElementById('statusMsg');
-  st.textContent = msg;
-  st.className = 'status' + (type ? ' '+type : '');
+function showMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.style.display = 'block'; el.textContent = text;
+  el.className = 'msg' + (type ? ' '+type : '');
 }
 
 document.getElementById('urlInput').addEventListener('keydown', e => { if (e.key === 'Enter') loadComments(); });
