@@ -84,7 +84,7 @@ def comments(url: str = Query(...)):
         try:
             cl = get_client() if attempt == 0 else reset_client()
             media_pk = cl.media_pk_from_url(url)
-            raw = cl.media_comments(media_pk, amount=2000)
+            raw = cl.media_comments(media_pk, amount=0)
 
             result = []
             for c in raw:
@@ -115,3 +115,4 @@ def comments(url: str = Query(...)):
 
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
