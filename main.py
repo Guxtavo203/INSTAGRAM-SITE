@@ -16,7 +16,6 @@ _cache: dict = {}
 
 
 def normalize_url(url: str) -> str:
-    # Extrai somente https://www.instagram.com/p/SHORTCODE/ â€” ignora UTM e outros params
     match = re.search(r'instagram\.com/(?:p|reel|tv)/([A-Za-z0-9_-]+)', url)
     if match:
         return f"https://www.instagram.com/p/{match.group(1)}/"
@@ -29,7 +28,7 @@ def build_client():
     username = os.environ.get("IG_USERNAME", "")
     password = os.environ.get("IG_PASSWORD", "")
     if not username or not password:
-        raise RuntimeError("Configure IG_USERNAME e IG_PASSWORD nas variaveis de ambiente.")
+        raise RuntimeError("Configure IG_USERNAME e IG_PASSWORD.")
 
     cl = Client()
     cl.delay_range = [1, 2]
@@ -59,6 +58,16 @@ def reset_client():
         _client = None
         _client = build_client()
     return _client
+
+
+def comment_to_dict(c) -> dict:
+    return {
+        "username": c.user.username,
+        "name": c.user.full_name or c.user.username,
+        "avatar": str(c.user.profile_pic_url) if c.user.profile_pic_url else None,
+        "text": c.text,
+        "id": str(c.pk),
+    }
 
 
 @asynccontextmanager
@@ -94,17 +103,19 @@ def comments(url: str = Query(...)):
         try:
             cl = get_client() if attempt == 0 else reset_client()
             media_pk = cl.media_pk_from_url(clean_url)
-            raw = cl.media_comments(media_pk, amount=0)
 
-            result = []
-            for c in raw:
-                result.append({
-                    "username": c.user.username,
-                    "name": c.user.full_name or c.user.username,
-                    "avatar": str(c.user.profile_pic_url) if c.user.profile_pic_url else None,
-                    "text": c.text,
-                    "id": str(c.pk),
-                })
+            # Busca comentarios principais
+            top_comments = cl.media_comments(media_pk, amount=0)
+            result = [comment_to_dict(c) for c in top_comments]
+
+            # Busca respostas de cada comentario
+            for c in top_comments:
+                try:
+                    replies = cl.media_comment_replies(media_pk, c.pk, amount=0)
+                    for r in replies:
+                        result.append(comment_to_dict(r))
+                except Exception:
+                    pass  # ignora erro em reply individual
 
             payload = {"ok": True, "comments": result, "total": len(result)}
             _cache[cache_key] = payload
