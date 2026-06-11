@@ -285,7 +285,7 @@ async function loadComments() {
     });
 
     setProgress(100);
-    showMsg(data.comments.length + ' comentarios â€” ' + participants.length + ' participantes unicos.', 'ok');
+    showMsg(data.comments.length + ' comentarios | ' + participants.length + ' participantes unicos.', 'ok');
     document.getElementById('infoPill').textContent = participants.length + ' participantes';
     renderComments(data.comments);
     document.getElementById('raffleArea').style.display = 'block';
