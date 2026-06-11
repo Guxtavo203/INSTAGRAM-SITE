@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import hashlib
 from contextlib import asynccontextmanager
 from threading import Lock
@@ -14,6 +15,14 @@ _lock = Lock()
 _cache: dict = {}
 
 
+def normalize_url(url: str) -> str:
+    # Extrai somente https://www.instagram.com/p/SHORTCODE/ â€” ignora UTM e outros params
+    match = re.search(r'instagram\.com/(?:p|reel|tv)/([A-Za-z0-9_-]+)', url)
+    if match:
+        return f"https://www.instagram.com/p/{match.group(1)}/"
+    return url
+
+
 def build_client():
     from instagrapi import Client
 
@@ -23,7 +32,7 @@ def build_client():
         raise RuntimeError("Configure IG_USERNAME e IG_PASSWORD nas variaveis de ambiente.")
 
     cl = Client()
-    cl.delay_range = [1, 3]
+    cl.delay_range = [1, 2]
 
     session_str = os.environ.get("IG_SESSION", "")
     if session_str:
@@ -74,7 +83,8 @@ def health():
 def comments(url: str = Query(...)):
     from instagrapi.exceptions import LoginRequired, MediaNotFound, ClientError
 
-    cache_key = hashlib.md5(url.encode()).hexdigest()
+    clean_url = normalize_url(url)
+    cache_key = hashlib.md5(clean_url.encode()).hexdigest()
     if cache_key in _cache:
         return _cache[cache_key]
 
@@ -83,7 +93,7 @@ def comments(url: str = Query(...)):
     for attempt in range(2):
         try:
             cl = get_client() if attempt == 0 else reset_client()
-            media_pk = cl.media_pk_from_url(url)
+            media_pk = cl.media_pk_from_url(clean_url)
             raw = cl.media_comments(media_pk, amount=0)
 
             result = []
@@ -115,4 +125,3 @@ def comments(url: str = Query(...)):
 
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
-
